@@ -29,4 +29,3 @@ public class Producto {
         return codigo + " | " + nombre + " | Precio: " + precio + " | Stock: " + cantidadStock;
     }
 }
-
