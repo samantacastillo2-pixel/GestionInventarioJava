@@ -1,61 +1,31 @@
-public class Parte1 {
+public class Producto {
 
-    // Atributos
     private String codigo;
     private String nombre;
     private double precio;
     private int cantidadStock;
 
-    // Constructor
-    public Parte1(String codigo, String nombre, double precio, int cantidadStock) {
+    public Producto(String codigo, String nombre, double precio, int cantidadStock) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.precio = precio;
         this.cantidadStock = cantidadStock;
     }
 
-    // Getters y Setters
-    public String getCodigo() {
-        return codigo;
-    }
+    public String getCodigo() { return codigo; }
+    public void setCodigo(String codigo) { this.codigo = codigo; }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    public int getCantidadStock() { return cantidadStock; }
+    public void setCantidadStock(int cantidadStock) { this.cantidadStock = cantidadStock; }
 
-    public double getPrecio() {
-        return precio;
-    }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public int getCantidadStock() {
-        return cantidadStock;
-    }
-
-    public void setCantidadStock(int cantidadStock) {
-        this.cantidadStock = cantidadStock;
-    }
-
-    // Método toString para mostrar información del producto
     @Override
     public String toString() {
-        return "Producto{" +
-                "codigo='" + codigo + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", precio=" + precio +
-                ", cantidadStock=" + cantidadStock +
-                '}';
+        return codigo + " | " + nombre + " | Precio: " + precio + " | Stock: " + cantidadStock;
     }
 }
-
