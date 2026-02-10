@@ -1,39 +1,7 @@
 import java.util.ArrayList;
 
-class Inventario {
-    private String nombre;
-    private double precio;
-    private int cantidad;
+public class Inventario {
 
-    public Producto(String nombre, double precio, int cantidad) {
-        this.nombre = nombre;
-        this.precio = precio;
-        this.cantidad = cantidad;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public double getPrecio() {
-        return precio;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    @Override
-    public String toString() {
-        return nombre + " - Precio: " + precio + " - Cantidad: " + cantidad;
-    }
-}
-
-class Inventario {
     private ArrayList<Producto> productos;
 
     public Inventario() {
@@ -44,23 +12,26 @@ class Inventario {
         productos.add(p);
     }
 
-    public void eliminarProducto(String nombre) {
-        productos.removeIf(p -> p.getNombre().equalsIgnoreCase(nombre));
+    public boolean eliminarProducto(String codigo) {
+        return productos.removeIf(p -> p.getCodigo().equalsIgnoreCase(codigo));
     }
 
-    public Producto buscarProducto(String nombre) {
+    public Producto buscarProducto(String codigo) {
         for (Producto p : productos) {
-            if (p.getNombre().equalsIgnoreCase(nombre)) {
+            if (p.getCodigo().equalsIgnoreCase(codigo)) {
                 return p;
             }
         }
         return null;
     }
 
-    public void mostrarInventario() {
-        for (Producto p : productos) {
-            System.out.println(p);
+    public void listarProductos() {
+        if (productos.isEmpty()) {
+            System.out.println("Inventario vacío");
+        } else {
+            for (Producto p : productos) {
+                System.out.println(p);
+            }
         }
     }
-
 }
