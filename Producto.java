@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-class Producto {
+class Inventario {
     private String nombre;
     private double precio;
     private int cantidad;
@@ -62,4 +62,5 @@ class Inventario {
             System.out.println(p);
         }
     }
+
 }
