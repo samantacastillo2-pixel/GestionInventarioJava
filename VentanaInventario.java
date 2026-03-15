@@ -3,7 +3,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class VentanaInventario extends JFrame {
 
-    Inventario inventario = new Inventario();
+    InventarioVentana inventario = new InventarioVentana();
 
     JTextField txtCodigo = new JTextField();
     JTextField txtNombre = new JTextField();
