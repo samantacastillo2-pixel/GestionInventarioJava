@@ -43,7 +43,7 @@ public class VentanaInventario extends JFrame {
         add(btnEliminar);
 
         modelo = new DefaultTableModel();
-        modelo.addColumn("Codigo");
+        modelo.addColumn("Código");
         modelo.addColumn("Nombre");
         modelo.addColumn("Cantidad");
         modelo.addColumn("Precio");
@@ -54,23 +54,33 @@ public class VentanaInventario extends JFrame {
         scroll.setBounds(20,110,540,200);
         add(scroll);
 
-        // BOTON AGREGAR
+        // BOTÓN AGREGAR
         btnAgregar.addActionListener(e -> {
 
-            String codigo = txtCodigo.getText();
-            String nombre = txtNombre.getText();
-            int cantidad = Integer.parseInt(txtCantidad.getText());
-            double precio = Double.parseDouble(txtPrecio.getText());
+            try {
 
-            Producto p = new Producto(codigo,nombre,precio,cantidad);
+                String codigo = txtCodigo.getText();
+                String nombre = txtNombre.getText();
+                int cantidad = Integer.parseInt(txtCantidad.getText());
+                double precio = Double.parseDouble(txtPrecio.getText());
 
-            inventario.agregarProducto(p);
+                ProductoVentana p = new ProductoVentana(codigo,nombre,cantidad,precio);
 
-            modelo.addRow(new Object[]{codigo,nombre,cantidad,precio});
+                inventario.agregarProducto(p);
+
+                actualizarTabla();
+                limpiarCampos();
+
+            } catch(NumberFormatException ex){
+
+                JOptionPane.showMessageDialog(this,
+                        "Cantidad y Precio deben ser números");
+
+            }
 
         });
 
-        // BOTON ELIMINAR
+        // BOTÓN ELIMINAR
         btnEliminar.addActionListener(e -> {
 
             int fila = tabla.getSelectedRow();
@@ -81,27 +91,82 @@ public class VentanaInventario extends JFrame {
 
                 inventario.eliminarProducto(codigo);
 
-                modelo.removeRow(fila);
+                actualizarTabla();
 
             }
 
         });
 
-        // BOTON EDITAR
+        // BOTÓN EDITAR
         btnEditar.addActionListener(e -> {
 
             int fila = tabla.getSelectedRow();
 
             if(fila >= 0){
 
-                modelo.setValueAt(txtCodigo.getText(),fila,0);
-                modelo.setValueAt(txtNombre.getText(),fila,1);
-                modelo.setValueAt(txtCantidad.getText(),fila,2);
-                modelo.setValueAt(txtPrecio.getText(),fila,3);
+                try{
+
+                    String codigo = txtCodigo.getText();
+
+                    ProductoVentana p = inventario.buscarProducto(codigo);
+
+                    if(p != null){
+
+                        p.setNombre(txtNombre.getText());
+                        p.setCantidad(Integer.parseInt(txtCantidad.getText()));
+                        p.setPrecio(Double.parseDouble(txtPrecio.getText()));
+
+                        actualizarTabla();
+
+                    }else{
+
+                        JOptionPane.showMessageDialog(this,
+                                "Producto no encontrado");
+
+                    }
+
+                }catch(NumberFormatException ex){
+
+                    JOptionPane.showMessageDialog(this,
+                            "Cantidad y Precio deben ser números");
+
+                }
 
             }
 
         });
+
+    }
+
+    private void actualizarTabla(){
+
+        modelo.setRowCount(0);
+
+        for(ProductoVentana p : inventario.getProductos()){
+
+            Object[] fila = {
+                    p.getCodigo(),
+                    p.getNombre(),
+                    p.getCantidad(),
+                    p.getPrecio()
+            };
+
+            modelo.addRow(fila);
+
+        }
+
+    }
+
+    private void limpiarCampos(){
+
+        txtCodigo.setText("");
+        txtNombre.setText("");
+        txtCantidad.setText("");
+        txtPrecio.setText("");
+
+    }
+
+}
 
     }
 
