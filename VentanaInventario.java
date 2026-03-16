@@ -25,62 +25,51 @@ public class VentanaInventario extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         txtCodigo.setBounds(20,20,100,25);
-        txtNombre.setBounds(130,20,100,25);
-        txtCantidad.setBounds(240,20,80,25);
-        txtPrecio.setBounds(330,20,80,25);
+        txtNombre.setBounds(140,20,100,25);
+        txtCantidad.setBounds(260,20,100,25);
+        txtPrecio.setBounds(380,20,100,25);
 
         add(txtCodigo);
         add(txtNombre);
         add(txtCantidad);
         add(txtPrecio);
 
-        btnAgregar.setBounds(20,60,100,30);
-        btnEditar.setBounds(130,60,100,30);
-        btnEliminar.setBounds(240,60,100,30);
+        btnAgregar.setBounds(20,60,100,25);
+        btnEditar.setBounds(140,60,100,25);
+        btnEliminar.setBounds(260,60,100,25);
 
         add(btnAgregar);
         add(btnEditar);
         add(btnEliminar);
 
         modelo = new DefaultTableModel();
-        modelo.addColumn("Código");
+        modelo.addColumn("Codigo");
         modelo.addColumn("Nombre");
         modelo.addColumn("Cantidad");
         modelo.addColumn("Precio");
 
         tabla = new JTable(modelo);
-
         JScrollPane scroll = new JScrollPane(tabla);
-        scroll.setBounds(20,110,540,200);
+        scroll.setBounds(20,100,540,220);
+
         add(scroll);
 
-        // BOTÓN AGREGAR
+        // BOTON AGREGAR
         btnAgregar.addActionListener(e -> {
 
-            try {
+            String codigo = txtCodigo.getText();
+            String nombre = txtNombre.getText();
+            int cantidad = Integer.parseInt(txtCantidad.getText());
+            double precio = Double.parseDouble(txtPrecio.getText());
 
-                String codigo = txtCodigo.getText();
-                String nombre = txtNombre.getText();
-                int cantidad = Integer.parseInt(txtCantidad.getText());
-                double precio = Double.parseDouble(txtPrecio.getText());
+            ProductoVentana p = new ProductoVentana(codigo,nombre,cantidad,precio);
 
-                ProductoVentana p = new ProductoVentana(codigo,nombre,cantidad,precio);
+            inventario.agregarProducto(p);
 
-                inventario.agregarProducto(p);
-
-                actualizarTabla();
-                limpiarCampos();
-
-            } catch(NumberFormatException ex){
-
-                JOptionPane.showMessageDialog(this,
-                        "Cantidad y Precio deben ser números");
-
-            }
-
+            actualizarTabla();
         });
 
-        // BOTÓN ELIMINAR
+        // BOTON ELIMINAR
         btnEliminar.addActionListener(e -> {
 
             int fila = tabla.getSelectedRow();
@@ -97,40 +86,20 @@ public class VentanaInventario extends JFrame {
 
         });
 
-        // BOTÓN EDITAR
+        // BOTON EDITAR
         btnEditar.addActionListener(e -> {
 
-            int fila = tabla.getSelectedRow();
+            String codigo = txtCodigo.getText();
 
-            if(fila >= 0){
+            ProductoVentana p = inventario.buscarProducto(codigo);
 
-                try{
+            if(p != null){
 
-                    String codigo = txtCodigo.getText();
+                p.setNombre(txtNombre.getText());
+                p.setCantidad(Integer.parseInt(txtCantidad.getText()));
+                p.setPrecio(Double.parseDouble(txtPrecio.getText()));
 
-                    ProductoVentana p = inventario.buscarProducto(codigo);
-
-                    if(p != null){
-
-                        p.setNombre(txtNombre.getText());
-                        p.setCantidad(Integer.parseInt(txtCantidad.getText()));
-                        p.setPrecio(Double.parseDouble(txtPrecio.getText()));
-
-                        actualizarTabla();
-
-                    }else{
-
-                        JOptionPane.showMessageDialog(this,
-                                "Producto no encontrado");
-
-                    }
-
-                }catch(NumberFormatException ex){
-
-                    JOptionPane.showMessageDialog(this,
-                            "Cantidad y Precio deben ser números");
-
-                }
+                actualizarTabla();
 
             }
 
@@ -138,35 +107,20 @@ public class VentanaInventario extends JFrame {
 
     }
 
-    private void actualizarTabla(){
+    public void actualizarTabla(){
 
         modelo.setRowCount(0);
 
         for(ProductoVentana p : inventario.getProductos()){
 
-            Object[] fila = {
-                    p.getCodigo(),
-                    p.getNombre(),
-                    p.getCantidad(),
-                    p.getPrecio()
-            };
-
-            modelo.addRow(fila);
+            modelo.addRow(new Object[]{
+                p.getCodigo(),
+                p.getNombre(),
+                p.getCantidad(),
+                p.getPrecio()
+            });
 
         }
-
-    }
-
-    private void limpiarCampos(){
-
-        txtCodigo.setText("");
-        txtNombre.setText("");
-        txtCantidad.setText("");
-        txtPrecio.setText("");
-
-    }
-
-}
 
     }
 
