@@ -1,8 +1,8 @@
 // clase que representa un producto dentro del sistema
-public class Producto {
+//public class Producto {
 
     // atributos que describen al producto
-    private String codigo;
+  //  private String codigo;
     private String nombre;
     private double precio;
     private int cantidadStock;
