@@ -40,8 +40,3 @@ public class ProductoVentana {
         this.precio = precio;
     }
 }
-
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-}
