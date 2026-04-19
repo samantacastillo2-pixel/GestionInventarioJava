@@ -83,4 +83,72 @@ public class ProductoDAO {
             System.out.println("Error eliminar: " + e.getMessage());
         }
     }
+
+    // OBTENER TODOS LOS PRODUCTOS
+    public ArrayList<Producto> obtenerProductos() {
+        ArrayList<Producto> lista = new ArrayList<>();
+        String sql = "SELECT * FROM productos";
+
+        try (Connection con = Conexion.conectar();
+             Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Producto p = new Producto(
+                    rs.getInt("id"),
+                    rs.getString("nombre"),
+                    rs.getDouble("precio"),
+                    rs.getInt("cantidad")
+                );
+                lista.add(p);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error obtenerProductos: " + e.getMessage());
+        }
+
+        return lista;
+    }
+
+    // AUMENTAR STOCK
+    public void aumentarStock(int id, int cantidadExtra) {
+        String sql = "UPDATE productos SET cantidad = cantidad + ? WHERE id = ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, cantidadExtra);
+            ps.setInt(2, id);
+            ps.executeUpdate();
+
+            System.out.println("Stock aumentado al producto ID " + id);
+
+        } catch (SQLException e) {
+            System.out.println("Error aumentarStock: " + e.getMessage());
+        }
+    }
+
+    // DISMINUIR STOCK
+    public void disminuirStock(int id, int cantidadVenta) {
+        String sql = "UPDATE productos SET cantidad = cantidad - ? WHERE id = ? AND cantidad >= ?";
+
+        try (Connection con = Conexion.conectar();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, cantidadVenta);
+            ps.setInt(2, id);
+            ps.setInt(3, cantidadVenta);
+
+            int filas = ps.executeUpdate();
+
+            if (filas > 0) {
+                System.out.println("Venta realizada al producto ID " + id);
+            } else {
+                System.out.println("No hay suficiente stock para el producto ID " + id);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error disminuirStock: " + e.getMessage());
+        }
+    }
 }
